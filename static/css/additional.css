@@ -1,0 +1,26 @@
+.discounted-price {
+    color: green;
+    font-weight: bold;
+}
+
+.discount-percentage {
+    color: red;
+    font-size: 0.5em;
+}
+
+.like-btn {
+    background-color: transparent; /* To make it blend with the card */
+    border: none; /* No border */
+    color: red; /* Heart color */
+    font-size: 1.5em; /* Size of the heart icon */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.like-btn:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.like-btn i {
+    margin-right: 0; /* Ensure no extra space around the icon */
+}

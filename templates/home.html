@@ -26,78 +26,49 @@
 </header><!-- sect-heading -->
 	
 <div class="row">
+	{% comment %} {% for product in products %}
 	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/1.jpg'%}"> </a>
+		<div class="card card-product-grid pt-3">
+			<a href="./product-detail.html" class="img-wrap d-flex justify-content-center align-items-center" style="height: 200px; overflow: hidden;">
+				<img src="{{ product.images.url }}" class="product-image img-fluid" style="object-fit: cover; height: 100%; width: auto;">
+			</a>
 			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Just another product name</a>
-				<div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
+				<a href="./product-detail.html" class="title text-truncate">{{ product.product_name }}</a>
+				<div class="price mt-1">${{ product.price }}</div>
 			</figcaption>
 		</div>
 	</div> <!-- col.// -->
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/2.jpg'%}"> </a>
-			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Some item name here</a>
-				<div class="price mt-1">$280.00</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/3.jpg'%}"> </a>
-			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Great product name here</a>
-				<div class="price mt-1">$56.00</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/4.jpg'%}"> </a>
-			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Just another product name</a>
-				<div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/5.jpg'%}"> </a>
-			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Just another product name</a>
-				<div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/6.jpg'%}"> </a>
-			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Some item name here</a>
-				<div class="price mt-1">$280.00</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/7.jpg'%}"> </a>
-			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Great product name here</a>
-				<div class="price mt-1">$56.00</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
-	<div class="col-md-3">
-		<div class="card card-product-grid">
-			<a href="./product-detail.html" class="img-wrap"> <img src="{% static 'images/items/9.jpg'%}"> </a>
-			<figcaption class="info-wrap">
-				<a href="./product-detail.html" class="title">Just another product name</a>
-				<div class="price mt-1">$179.00</div> <!-- price-wrap.// -->
-			</figcaption>
-		</div>
-	</div> <!-- col.// -->
+	{% endfor %}	 {% endcomment %}
+
+    {% for product in products %}
+    <div class="col-md-3">
+        <div class="card card-product-grid pt-3 position-relative">
+            <a href="./product-detail.html" class="img-wrap d-flex justify-content-center align-items-center" style="height: 200px; overflow: hidden;">
+                <img src="{{ product.images.url }}" class="product-image img-fluid" style="object-fit: cover; height: 100%; width: auto;">
+            </a>
+            <figcaption class="info-wrap">
+                <a href="./product-detail.html" class="title text-truncate">{{ product.product_name }}</a>
+                
+                <!-- Price Section with Discount Logic -->
+                <div class="price mt-1">
+                    {% if product.discount_percentage > 0 or product.discount_amount > 0 %}
+                        <span style="text-decoration: line-through;">${{ product.price }}</span>
+                        <span class="discounted-price">${{ product.final_price }}</span>
+                        <span class="discount-percentage">(-{{ product.discount_percentage }}%)</span>
+                    {% else %}
+                        <span>${{ product.price }}</span>
+                    {% endif %}
+                </div>
+            </figcaption>
+    
+            <!-- Heart (like) button at the top right -->
+            <button class="btn btn-outline-danger like-btn position-absolute top-0 end-0 m-2" data-product-id="{{ product.id }}">
+                <i class="fa fa-heart"></i>
+            </button>
+        </div>
+    </div> <!-- col.// -->
+    {% endfor %}      
+	
 </div> <!-- row.// -->
 
 </div><!-- container // -->
