@@ -1,17 +1,23 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Product
+from category.models import Category
 
 # Store View
-def store(request):
-    # Get All Products
-    products = Product.objects.all().filter(is_available=True)
+def store(request, category_slug=None):
+    # Get All Available Products
+    products = Product.objects.filter(is_available=True)
     
-    # Get Products Count
-    products_count = products.count()
+    # If Category Slug Exists in URL
+    if category_slug:
+        # Get Category
+        category = get_object_or_404(Category, slug=category_slug)
+        
+        # Get Product By Category
+        products = products.filter(category=category)
     
     context = {
         'products': products,
-        'products_count': products_count,
+        'products_count': len(products),
     }
-    
+
     return render(request, 'store/store.html', context)
