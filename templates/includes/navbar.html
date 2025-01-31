@@ -47,6 +47,8 @@
                 </div> {% endcomment %}
 
                 <div class="dropdown-menu">
+                    <a class="dropdown-item" href="{% url 'store' %}">All Products</a>
+
                     {% for link in links %}
                         <a class="dropdown-item" href="{{ link.get_url }}">{{ link.category_name }}</a>
                     {% endfor %}
