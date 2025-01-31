@@ -48,7 +48,7 @@
 
                 <div class="dropdown-menu">
                     {% for link in links %}
-                        <a class="dropdown-item" href="#">{{ link.category_name }}</a>
+                        <a class="dropdown-item" href="{{ link.get_url }}">{{ link.category_name }}</a>
                     {% endfor %}
                 </div>
             </div>  <!-- category-wrap.// -->
