@@ -37,13 +37,19 @@
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> 
                     <i class="fa fa-bars"></i> <span style="padding-left:10px; padding-right:5px">All Categories</span>
                 </button>
-                <div class="dropdown-menu">
+                {% comment %} <div class="dropdown-menu">
                     <a class="dropdown-item" href="#">Machinery / Mechanical Parts / Tools </a>
                     <a class="dropdown-item" href="#">Consumer Electronics / Home Appliances </a>
                     <a class="dropdown-item" href="#">Auto / Transportation</a>
                     <a class="dropdown-item" href="#">Apparel / Textiles / Timepieces </a>
                     <a class="dropdown-item" href="#">Home & Garden / Construction / Lights </a>
                     <a class="dropdown-item" href="#">Beauty & Personal Care / Health </a> 
+                </div> {% endcomment %}
+
+                <div class="dropdown-menu">
+                    {% for link in links %}
+                        <a class="dropdown-item" href="#">{{ link.category_name }}</a>
+                    {% endfor %}
                 </div>
             </div>  <!-- category-wrap.// -->
         </div> <!-- col.// -->

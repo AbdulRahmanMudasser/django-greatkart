@@ -20,4 +20,5 @@ def store(request, category_slug=None):
         'products_count': len(products),
     }
 
+    # Render Store Template
     return render(request, 'store/store.html', context)
