@@ -22,3 +22,8 @@ def store(request, category_slug=None):
 
     # Render Store Template
     return render(request, 'store/store.html', context)
+
+# Product Details View
+def product_details(request, category_slug, product_slug):
+    # Render Product Details Template
+    return render(request, 'store/product_details.html')
