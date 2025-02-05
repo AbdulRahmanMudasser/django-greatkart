@@ -21,8 +21,8 @@
 <div class="container">
 
 <header class="section-heading">
-	<a href="./store.html" class="btn btn-outline-primary float-right">See all</a>
-	<h3 class="section-title">Popular products</h3>
+	<a href="{% url 'store' %}" class="btn btn-outline-primary float-right">See all</a>
+	<h3 class="section-title">Popular Products</h3>
 </header><!-- sect-heading -->
 	
 <div class="row">
@@ -41,19 +41,20 @@
 	{% endfor %}	 {% endcomment %}
 
     {% for product in products %}
+    
     <div class="col-md-3">
         <div class="card card-product-grid pt-3 position-relative">
-            <a href="./product-detail.html" class="img-wrap d-flex justify-content-center align-items-center" style="height: 200px; overflow: hidden;">
+            <a href="{{ product.get_url }}" class="img-wrap d-flex justify-content-center align-items-center" style="height: 200px; overflow: hidden;">
                 <img src="{{ product.images.url }}" class="product-image img-fluid" style="object-fit: cover; height: 100%; width: auto;">
             </a>
             <figcaption class="info-wrap">
-                <a href="./product-detail.html" class="title text-truncate">{{ product.product_name }}</a>
+                <a href="{{ product.get_url }}" class="title text-truncate">{{ product.product_name }}</a>
                 
                 <!-- Price Section with Discount Logic -->
                 <div class="price mt-1">
                     {% if product.discount_percentage > 0 or product.discount_amount > 0 %}
-                        <span style="text-decoration: line-through;">${{ product.price }}</span>
-                        <span class="discounted-price">${{ product.final_price }}</span>
+                        <span style="text-decoration: line-through;">$ {{ product.price }}</span>
+                        <span class="discounted-price">$ {{ product.final_price }}</span>
                         <span class="discount-percentage">(-{{ product.discount_percentage }}%)</span>
                     {% else %}
                         <span>${{ product.price }}</span>
