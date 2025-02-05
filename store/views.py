@@ -25,5 +25,15 @@ def store(request, category_slug=None):
 
 # Product Details View
 def product_details(request, category_slug, product_slug):
+    try:
+        # Try to Get Product By Category
+        single_product = Product.objects.get(category__slug=category_slug, slug=product_slug)
+    except Exception as e:
+        raise e
+    
+    context = {
+        'single_product': single_product,
+    }
+    
     # Render Product Details Template
-    return render(request, 'store/product_details.html')
+    return render(request, 'store/product_details.html', context)
