@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from category.models import Category
 from django.utils.text import slugify
 
@@ -34,6 +35,10 @@ class Product(models.Model):
         self.discounted_price = self.calculate_discounted_price()
         
         super().save(*args, **kwargs)
+        
+    def get_url(self):
+        """Returns the URL for the product details page."""
+        return reverse('product_details', args=[self.category.slug, self.slug])
 
     def __str__(self):
         return self.product_name
