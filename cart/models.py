@@ -1,3 +1,32 @@
 from django.db import models
+from django.urls import reverse
+from store.models import Product
 
-# Create your models here.
+# Cart Model
+class Cart(models.Model):
+    cart_id = models.CharField(max_length=250, blank=True)
+    date_added = models.DateField(auto_now_add=True)
+    
+    class Meta:
+        verbose_name = "Cart"
+        verbose_name_plural = "Carts"
+    
+    def __str__(self):
+        return self.cart_id
+    
+# Cart Item Model
+class CartItem(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+    is_active = models.BooleanField()
+
+    class Meta:
+        verbose_name = "Cart Item"
+        verbose_name_plural = "Cart Items"
+
+    def __str__(self):
+        return self.product
+
+    def get_absolute_url(self):
+        return reverse("CartItem_detail", kwargs={"pk": self.pk})
