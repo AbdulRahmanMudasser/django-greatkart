@@ -1,7 +1,9 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from store.models import Product
 from .models import Cart, CartItem
+
 
 # Get Session Key
 def _get_session(request):
@@ -57,10 +59,27 @@ def add_cart(request, product_id):
         
 
 # Cart View
-def cart(request):
+def cart(request, total=0, quantity=0, cart_items=None):
+    try:
+        # Get Cart Associated With Current User Session
+        cart = Cart.objects.get(cart_id=_get_session(request))
+        
+        # Retrieve All Active Cart Items for Cart
+        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+        
+        # Calculate Total Price & Quantity of Items in Cart
+        for cart_item in cart_items:
+            total += (cart_item.product.price * cart_item.quantity)
+            quantity +=cart_item.quantity
+    
+    except ObjectDoesNotExist:
+        # if Cart or Cart Items Does Not Exist, Do Nothing 
+        pass
     
     context = {
-        
+        'total': total,
+        'quantity': quantity,
+        'cart_items': cart_items,
     }
     
     # Render Cart Template
