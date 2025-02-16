@@ -76,8 +76,9 @@ def cart(request, total=Decimal('0.00'), quantity=0, cart_items=None):
             total += Decimal(str(cart_item.product.discounted_price)) * cart_item.quantity
             quantity += cart_item.quantity
             
-            print(f"Total: {total}, Quantity: {quantity}, Cart Items: {cart_item.product}")
-
+        # Calculating Tax & Grand Total
+        tax = (2 * total) / 100
+        grand_total = tax + total
 
     except ObjectDoesNotExist:
         # If Cart or Cart Items Do Not Exist, Ensure cart_items is an Empty List
@@ -87,6 +88,8 @@ def cart(request, total=Decimal('0.00'), quantity=0, cart_items=None):
         'total': total,
         'quantity': quantity,
         'cart_items': cart_items,
+        'tax': tax,
+        'grand_total': grand_total,
     }
 
     # Render Cart Template
