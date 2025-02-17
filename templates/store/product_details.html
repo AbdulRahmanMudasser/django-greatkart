@@ -69,7 +69,19 @@
                         </div>
                         <hr>
                         {% if single_product.stock > 0 %}
-                            <a href="{% url 'add_cart' single_product.id %}" class="btn btn-lg btn-primary"> <i class="fas fa-shopping-cart"></i> Add to Cart</a>
+
+                            {% if in_cart %}
+
+                                <a href="#" class="btn btn-success"> <i class="fas fa-check"></i> Added to Cart</a>
+
+                                <a href="{% url 'cart' %}" class="btn btn-primary"> <i class="fas fa-eye"></i> View Cart</a>
+
+                            {% else %}
+
+                                <a href="{% url 'add_cart' single_product.id %}" class="btn btn-primary"> <i class="fas fa-shopping-cart"></i> Add to Cart</a>
+
+                            {% endif %}
+
                         {% else %}
                             <span class="text-danger h5">Out of Stock</span>
                         {% endif %}
