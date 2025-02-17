@@ -61,7 +61,7 @@ def add_cart(request, product_id):
     # Redirect to Cart
     return redirect('cart')
 
-# Remove Cart Item
+# Remove Cart
 def remove_cart(request, product_id):
     # Get Cart by User Session
     cart = Cart.objects.get(cart_id=_get_session(request))
@@ -91,6 +91,27 @@ def remove_cart(request, product_id):
 
     # Redirect to Cart Template
     return redirect('cart')   
+
+# Remove Cart Item
+def remove_cart_item(request, product_id):
+    # Get Cart by Session
+    cart = get_object_or_404(Cart, cart_id=_get_session(request))  
+    
+    # Get Product
+    product = get_object_or_404(Product, id=product_id)
+
+    # Find the Cart Item & Delete if Exists
+    cart_item = CartItem.objects.filter(cart=cart, product=product).first()
+    
+    if cart_item:
+        cart_item.delete()
+
+        # Delete Cart if it's Empty
+        if not CartItem.objects.filter(cart=cart).exists():
+            cart.delete()
+
+    # Redirect to Cart Page
+    return redirect('cart')  
 
 # Cart View
 def cart(request, total=Decimal('0.00'), quantity=0, cart_items=None):
