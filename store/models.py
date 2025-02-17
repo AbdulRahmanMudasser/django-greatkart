@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from category.models import Category
 from django.utils.text import slugify
+from django.db import IntegrityError
 
 class Product(models.Model):
     product_name = models.CharField(max_length=200, unique=True)

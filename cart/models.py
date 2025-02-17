@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.urls import reverse
 from store.models import Product
@@ -19,14 +20,14 @@ class CartItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     quantity = models.IntegerField()
-    is_active = models.BooleanField()
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "Cart Item"
         verbose_name_plural = "Cart Items"
 
     def __str__(self):
-        return self.product
+        return f"{self.product.product_name} ({self.quantity})" 
 
-    def get_absolute_url(self):
-        return reverse("CartItem_detail", kwargs={"pk": self.pk})
+    def sub_total(self):
+        return Decimal(str(self.product.discounted_price)) * self.quantity 
