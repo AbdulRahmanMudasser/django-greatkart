@@ -114,35 +114,39 @@ def remove_cart_item(request, product_id):
     return redirect('cart')  
 
 # Cart View
-def cart(request, total=Decimal('0.00'), quantity=0, cart_items=None):
+def cart(request, total=0, quantity=0, cart_items=None):
+    tax = 0  # Initialize tax
+    grand_total = 0  # Initialize grand total
+
     try:
         # Get Cart Associated With Current User Session
         cart = Cart.objects.get(cart_id=_get_session(request))
-
+        
         # Retrieve All Active Cart Items for Cart
-        cart_items = CartItem.objects.filter(cart=cart, is_active=True) or []
-
+        cart_items = CartItem.objects.filter(cart=cart, is_active=True)
+        
         # Calculate Total Price & Quantity of Items in Cart
         for cart_item in cart_items:
-            total += Decimal(str(cart_item.product.discounted_price)) * cart_item.quantity
+            total += (cart_item.product.discounted_price * cart_item.quantity)
             quantity += cart_item.quantity
-            
-        # Calculating Tax & Grand Total
-        tax = (2 * total) / 100
-        grand_total = tax + total
+        
+        # Calculate Tax (e.g., 5% of total)
+        tax = total * 0.05  # Modify the tax rate if needed
+        
+        # Calculate Grand Total
+        grand_total = total + tax
 
     except ObjectDoesNotExist:
-        # If Cart or Cart Items Do Not Exist, Ensure cart_items is an Empty List
-        cart_items = []
+        pass  # If cart or cart items do not exist, proceed with default values
 
     context = {
         'total': total,
         'quantity': quantity,
         'cart_items': cart_items,
-        'tax': tax,
-        'grand_total': grand_total,
+        'tax': round(tax, 2),  # Ensure rounded tax
+        'grand_total': round(grand_total, 2)  # Ensure rounded total
     }
-
+    
     # Render Cart Template
     return render(request, 'cart/cart.html', context)
 
