@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404
+from django.core.paginator import Paginator
 
 from cart.models import CartItem
 from cart.views import _get_session
@@ -7,8 +8,9 @@ from category.models import Category
 
 # Store View
 def store(request, category_slug=None):
-    # Get All Available Products
-    products = Product.objects.filter(is_available=True)
+    # Get All Available Products & Order Them
+    # products = Product.objects.filter(is_available=True)
+    products = Product.objects.filter(is_available=True).order_by('id')
     
     # If Category Slug Exists in URL
     if category_slug:
@@ -17,9 +19,19 @@ def store(request, category_slug=None):
         
         # Get Product By Category
         products = products.filter(category=category)
+        
+    # Split Products into Pages, Show 6 Per Page
+    paginator = Paginator(products, 6)
+    
+    # Get Current Page from the Request
+    page = request.GET.get('page')
+    
+    # Get Paginated Products for that Page
+    paged_products = paginator.get_page(page)
     
     context = {
-        'products': products,
+        # 'products': products,
+        'products': paged_products,
         'products_count': len(products),
     }
 
