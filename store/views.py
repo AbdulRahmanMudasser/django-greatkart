@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 
@@ -57,3 +58,7 @@ def product_details(request, category_slug=None, product_slug=None):
     
     # Render Product Details Template
     return render(request, 'store/product_details.html', context)
+
+# Search Product View
+def search(request):
+    return HttpResponse("Search Page")
