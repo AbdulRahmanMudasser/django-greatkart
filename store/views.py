@@ -3,6 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 
 from cart.models import CartItem
+from django.db.models import Q
 from cart.views import _get_session
 from .models import Product
 from category.models import Category
@@ -61,4 +62,20 @@ def product_details(request, category_slug=None, product_slug=None):
 
 # Search Product View
 def search(request):
-    return HttpResponse("Search Page")
+    keyword = request.GET.get('keyword', '').strip()  # Get keyword and remove extra spaces
+    products = []
+
+    if keyword:  
+        # Search for keyword in both 'description' and 'product_name'
+        products = Product.objects.filter(
+            Q(description__icontains=keyword) | Q(product_name__icontains=keyword)
+        ).order_by('-created_date')
+        
+        products_count = products.count()
+
+    context = {
+        'products': products,
+        'products_count': products_count,
+    }
+    
+    return render(request, 'store/store.html', context)
