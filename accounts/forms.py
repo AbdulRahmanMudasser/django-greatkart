@@ -18,6 +18,15 @@ class RegisterUserForm(forms.ModelForm):
         model = Account
         fields = ['first_name', 'last_name', 'phone_number', 'email', 'password', 'confirm_password']
         
+    def clean(self):
+        cleaned_data = super(RegisterUserForm, self).clean()
+        
+        password = cleaned_data.get('password')
+        confirm_password = cleaned_data.get('confirm_password')
+        
+        if password != confirm_password:
+            raise forms.ValidationError("Passwords Don't Match")
+    
     def __init__(self, *args, **kwargs):
         super(RegisterUserForm, self).__init__(*args, **kwargs)
         
