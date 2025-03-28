@@ -1,8 +1,16 @@
 from django.shortcuts import render
 
+from accounts.forms import RegisterUserForm
+
 # Register User View
 def register_user(request):
-    return render(request, 'accounts/register.html')
+    form = RegisterUserForm()
+    
+    context = {
+        'form': form,
+    }
+    
+    return render(request, 'accounts/register.html', context)
 
 # Login User View
 def login_user(request):
