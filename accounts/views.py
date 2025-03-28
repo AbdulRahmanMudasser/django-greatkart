@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from accounts.forms import RegisterUserForm
 from accounts.models import Account, AccountManager
+
+from django.contrib import messages
 
 # Register User View
 def register_user(request):
@@ -35,6 +37,11 @@ def register_user(request):
             
             # Save User
             user.save()
+            
+            # Send Success Message
+            messages.success(request, "Registration Successful")
+            
+            return redirect('register')
             
     # if Request if GET
     else:
